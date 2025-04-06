@@ -1,1 +1,67 @@
+import random
 
+#Funcão de ativação Degrau Bipolar (Sinal)
+def bipolar_step(x):
+    if x >= 0:
+        return 1
+    else:
+        return -1
+    
+#Inicialização dos pesos aleatórios (entre -1 e 1)
+
+pesos = [random.uniform(-1, 1) for _ in range(4)]
+
+#Taxa de aprendizado
+taxa_aprendizado = 0.1
+
+#Dataset de treino (entradas e saídas esperadas)
+#Exemplo: função lógica AND modificada para bipolar (-1, 1)
+
+entradas = [
+    [-1, -1, -1, -1],
+    [-1, -1, -1, 1],
+    [1, -1, -1, 1],
+    [1, 1, 1, 1],
+]
+
+#Saídas esperadas 
+saidas_esperadas = [-1, -1, -1, 1]
+
+#Treinamento 
+epocas = 100
+for epoca in range(epocas):
+    erro_total = 0
+    print(f"\nÉpoca {epoca +1}")
+    for i  in range(len(entradas)):
+        x = entradas[i]
+        y_esperado = saidas_esperadas[i]
+    
+    #Soma ponderada (agregação), bias zero
+
+    soma = sum([x[j]* pesos[j] for j in range(4)])
+
+    #Saída do neurônio
+    y_saida = bipolar_step(soma)
+
+    #Cálculo do erro
+    erro = y_esperado - y_saida
+    erro_total += abs(erro)
+
+    #Atualização dos pesos
+
+    for j in range(4):
+        pesos[j] += taxa_aprendizado * erro * x[j]
+
+        print(f"Entrada: {x}, Esperado: {y_esperado}, Saída: {y_saida}, Erro: {erro}, Pesos: {[round(p,2) for p in pesos]} ")
+
+# Parar se não houver erro
+
+if erro_total == 0:
+    print ("\nTreinamento concluído sem erro zero!")
+    
+# Removed the 'break' statement as it is outside of a loop and unnecessary here.
+
+#Resultado final
+
+print("\nPesos finais: ", [round(p, 2) for p in pesos])
+  
